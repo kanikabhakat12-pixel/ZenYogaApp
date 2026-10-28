@@ -1,0 +1,13 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "ZenYogaApp",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "ZenYogaApp",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "id": "ZenYogaApp",
+  "description": "A web application for yoga poses."
+}
