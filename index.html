@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZenYoga - Step by Step Yoga Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4A7C59;
+      --primary-light: #E8F0EC;
+      --secondary: #99B898;
+      --accent: #E0A96D;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --text: #2C3E50;
+      --text-muted: #7F8C8D;
+      --border: #E2E8F0;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      min-height: 100vh;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding-bottom: 80px;
+    }
+
+    /* Header */
+    header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    .greeting h3 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .greeting p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Stats Bar */
+    .stats-card {
+      margin: 0 20px 20px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: var(--radius);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-item h4 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .stat-item p {
+      font-size: 11px;
+      opacity: 0.85;
+    }
+
+    /* Search & Categories */
+    .search-box {
+      margin: 0 20px 15px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      font-size: 14px;
+      background: #F8FAFC;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .categories {
+      display: flex;
+      gap: 10px;
+      padding: 0 20px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      scrollbar-width: none;
+    }
+
+    .chip {
+      padding: 8px 16px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Asana / Workout List */
+    .section-title {
+      padding: 0 20px 12px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .pose-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 0 20px;
+    }
+
+    .pose-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pose-card:hover {
+      border-color: var(--primary);
+      background: #FAFCFA;
+    }
+
+    .pose-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+
+    .pose-info {
+      flex: 1;
+    }
+
+    .pose-info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .pose-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      background: #F1F5F9;
+      color: var(--text-muted);
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* Modal / Step-by-step Guide View */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--surface);
+      z-index: 100;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+    }
+
+    .close-btn {
+      font-size: 18px;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .modal-body {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .timer-section {
+      text-align: center;
+      background: var(--primary-light);
+      padding: 20px;
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+    }
+
+    .timer-circle {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    /* Step Details Section */
+    .guide-box {
+      margin-bottom: 20px;
+    }
+
+    .guide-box h4 {
+      font-size: 15px;
+      margin-bottom: 10px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-list {
+      list-style: none;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .step-number {
+      background: var(--primary);
+      color: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .info-list {
+      background: #F8FAFC;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+      border-left: 4px solid var(--primary);
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 10;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header>
+      <div class="user-profile">
+        <div class="avatar">🧘</div>
+        <div class="greeting">
+          <h3>Namaste! 🙏</h3>
+          <p>Yoga aur Wellness Guide</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-card">
+      <div class="stat-item">
+        <h4 id="streak-count">5</h4>
+        <p>Day Streak 🔥</p>
+      </div>
+      <div class="stat-item">
+        <h4 id="mins-count">45</h4>
+        <p>Mindful Mins ⏱️</p>
+      </div>
+      <div class="stat-item">
+        <h4>Easy</h4>
+        <p>Level 🌟</p>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="search-input" placeholder="Yoga pose ya fayde khojein..." onkeyup="filterPoses()">
+    </div>
+
+    <!-- Categories -->
+    <div class="categories">
+      <div class="chip active" onclick="filterCategory('all', this)">Sabhi</div>
+      <div class="chip" onclick="filterCategory('Stress Relief', this)">Stress Relief</div>
+      <div class="chip" onclick="filterCategory('Flexibility', this)">Flexibility</div>
+      <div class="chip" onclick="filterCategory('Morning', this)">Morning Flow</div>
+    </div>
+
+    <!-- Pose / Routine List -->
+    <div class="section-title">Step-by-Step Yoga Asana</div>
+    <div class="pose-list" id="pose-list"></div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <div class="nav-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </div>
+      <div class="nav-item">
+        <i class="fa-solid fa-compass"></i>
+        <span>Explore</span>
+      </div>
+      <div class="nav-item">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Progress</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Detailed Step-by-Step Modal -->
+  <div class="modal" id="timer-modal">
+    <div class="modal-header">
+      <h4 id="modal-title">Yoga Guide</h4>
+      <div class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+
+    <div class="modal-body">
+      <!-- Timer Box -->
+      <div class="timer-section">
+        <div style="font-size: 40px; margin-bottom: 5px;" id="modal-icon">🧘</div>
+        <h3 id="modal-pose-name">Vrikshasana</h3>
+        <div class="timer-circle" id="timer-text">00:30</div>
+        
+        <div class="controls">
+          <button class="btn btn-outline" onclick="resetTimer()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+          <button class="btn btn-primary" id="start-btn" onclick="toggleTimer()"><i class="fa-solid fa-play"></i> Start Timer</button>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Instructions -->
+      <div class="guide-box">
+        <h4><i class="fa-solid fa-list-check"></i> Step-by-Step Kaise Karein:</h4>
+        <ul class="step-list" id="modal-steps"></ul>
+      </div>
+
+      <!-- Benefits -->
+      <div class="guide-box">
+        <h4><i class="fa-solid fa-heart-pulse"></i> Shreshth Labh (Benefits):</h4>
+        <div class="info-list" id="modal-benefits"></div>
+      </div>
+
+      <!-- Precautions -->
+      <div class="guide-box">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> Savdhaniyan (Precautions):</h4>
+        <div class="info-list" style="border-left-color: #E0A96D;" id="modal-precautions"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Detailed Yoga Data with Steps
+    const yogaData = [
+      {
+        id: 1,
+        name: "Vrikshasana (Tree Pose)",
+        category: "Flexibility",
+        duration: "30",
+        icon: "🧘",
+        desc: "Balance aur focus badhane ke liye sabse best asana.",
+        steps: [
+          "Seedhe khade ho jayein aur dono pairon ko aapas me mila lein.",
+          "Apne daayein (right) pair ko modkar baayein (left) jaangh (thigh) ke andar rakhne ki koshish karein.",
+          "Dono hathon ko namaste mudra me chhati ke samne ya upar uthayein.",
+          "Samne kisi ek point par dhyan kendrit karein aur gahri saans lein."
+        ],
+        benefits: "Sharir ka balance aur concentration badhata hai. Pairon ki muscles ko mazboot karta hai.",
+        precautions: "High BP ya chakkar aane ki samsya ho toh diwar ke sahare karein."
+      },
+      {
+        id: 2,
+        name: "Bhujangasana (Cobra Pose)",
+        category: "Stress Relief",
+        duration: "45",
+        icon: "🐍",
+        desc: "Peechhe ki kamar ke dard aur stress relief ke liye.",
+        steps: [
+          "Pet ke bal seedhe let jayein aur dono hathon ko kandhon ke pas rakhein.",
+          "Saans lete hue apni chhati aur sir ko upar ki taraf uthayein.",
+          "Kohniyon ko halka mod kar rakhein aur aakash ki taraf dekhein.",
+          "15-30 second tak is sthiti me rahein, fir saans chhodte hue neeche aayein."
+        ],
+        benefits: "Kamar dard me aaram deta hai, chest open karta hai aur paachan kriya sudharta hai.",
+        precautions: "Garbhavastha ya pet ki surgery hui ho toh ye asana na karein."
+      },
+      {
+        id: 3,
+        name: "Tadasana (Mountain Pose)",
+        category: "Morning",
+        duration: "30",
+        icon: "🧍",
+        desc: "Posture aur sharir ki lachak sudharne ke liye.",
+        steps: [
+          "Seedhe khade ho jayein aur hathon ki ungliyon ko aapas me fasa lein.",
+          "Saans lete hue hathon ko upar uthayein, hatheliyan aakash ki taraf rahein.",
+          "Aedi (heels) ko uthakar panjon (toes) par khade hone ki koshish karein.",
+          "Poore sharir ko upar ki taraf khinchein aur balance banaye rakhein."
+        ],
+        benefits: "Sharir ka posture sudharta hai aur spinal cord ko stretch karta hai.",
+        precautions: "Chakkar aane par aedi uthaye bina normal khade ho kar karein."
+      },
+      {
+        id: 4,
+        name: "Balasana (Child's Pose)",
+        category: "Stress Relief",
+        duration: "60",
+        icon: "🙇",
+        desc: "Mind ko calm aur tension door karne ke liye relaxed pose.",
+        steps: [
+          "Gutnon ke bal baith jayein (Vajrasana me).",
+          "Saans lete hue dono hathon ko upar uthayein.",
+          "Saans chhodte hue aage ki taraf jhukein aur matha zameen par tikayein.",
+          "Hathon ko samne zameen par failayein aur aaram se gahri saans lein."
+        ],
+        benefits: "Mansik tanav aur thakan door karta hai. Neck aur shoulders ko aaram deta hai.",
+        precautions: "Gutne me gambhir dard ho toh is asana ko karne se bachein."
+      }
+    ];
+
+    let currentTimer = null;
+    let timeLeft = 30;
+    let isRunning = false;
+    let selectedPose = null;
+
+    // Render Poses
+    function renderPoses(data) {
+      const listElement = document.getElementById("pose-list");
+      listElement.innerHTML = "";
+      
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "pose-card";
+        card.onclick = () => openModal(item);
+        card.innerHTML = `
+          <div class="pose-img">${item.icon}</div>
+          <div class="pose-info">
+            <h4>${item.name}</h4>
+            <p>${item.desc}</p>
+            <span class="tag">${item.category} • ${item.duration}s</span>
+          </div>
+          <i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 14px;"></i>
+        `;
+        listElement.appendChild(card);
+      });
+    }
+
+    // Filter Functions
+    function filterCategory(cat, el) {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+
+      if (cat === 'all') {
+        renderPoses(yogaData);
+      } else {
+        const filtered = yogaData.filter(item => item.category === cat);
+        renderPoses(filtered);
+      }
+    }
+
+    function filterPoses() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      const filtered = yogaData.filter(item => 
+        item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query)
+      );
+      renderPoses(filtered);
+    }
+
+    // Detailed Step Modal Controller
+    function openModal(pose) {
+      selectedPose = pose;
+      document.getElementById('modal-title').innerText = pose.name;
+      document.getElementById('modal-pose-name').innerText = pose.name;
+      document.getElementById('modal-icon').innerText = pose.icon;
+      
+      // Render Steps List
+      const stepsList = document.getElementById('modal-steps');
+      stepsList.innerHTML = "";
+      pose.steps.forEach((step, idx) => {
+        const li = document.createElement('li');
+        li.className = 'step-item';
+        li.innerHTML = `
+          <div class="step-number">${idx + 1}</div>
+          <div>${step}</div>
+        `;
+        stepsList.appendChild(li);
+      });
+
+      // Render Benefits & Precautions
+      document.getElementById('modal-benefits').innerText = pose.benefits;
+      document.getElementById('modal-precautions').innerText = pose.precautions;
+
+      timeLeft = parseInt(pose.duration);
+      updateTimerDisplay();
+      
+      document.getElementById('timer-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      clearInterval(currentTimer);
+      isRunning = false;
+      document.getElementById('start-btn').innerHTML = '<i class="fa-solid fa-play"></i> Start Timer';
+      document.getElementById('timer-modal').classList.remove('active');
+    }
+
+    // Timer Logic
+    function updateTimerDisplay() {
+      const secs = timeLeft < 10 ? `0${timeLeft}` : timeLeft;
+      document.getElementById('timer-text').innerText = `00:${secs}`;
+    }
+
+    function toggleTimer() {
+      const startBtn = document.getElementById('start-btn');
+      
+      if (isRunning) {
+        clearInterval(currentTimer);
+        isRunning = false;
+        startBtn.innerHTML = '<i class="fa-solid fa-play"></i> Start Timer';
+      } else {
+        isRunning = true;
+        startBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+        
+        currentTimer = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(currentTimer);
+            isRunning = false;
+            alert("Sahi Tarike Se Poora Kiya! Shandar 🎉");
+            
+            let mins = parseInt(document.getElementById('mins-count').innerText);
+            document.getElementById('mins-count').innerText = mins + 1;
+            
+            closeModal();
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(currentTimer);
+      isRunning = false;
+      timeLeft = parseInt(selectedPose.duration);
+      updateTimerDisplay();
+      document.getElementById('start-btn').innerHTML = '<i class="fa-solid fa-play"></i> Start Timer';
+    }
+
+    // Initial Execution
+    renderPoses(yogaData);
+  </script>
+</body>
+</html>
